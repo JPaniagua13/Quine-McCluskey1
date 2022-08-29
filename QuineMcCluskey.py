@@ -53,7 +53,7 @@ def difierenUnaCifra(numBits, minTer1, minTer2):
     - minTer1 y minTer2: las cadenas de minterminos a comparar. Ejemplo: minTer1-> '1100' & minTer2 -> '1111'
 
     Salidas:
-    - si difieren en una cifra retorna true. De lo contrario false. (Si diferir en X's retorna false)
+    - si difieren en una cifra retorna true. De lo contrario false. (Si difieren en X's retorna false)
     Ejemplo: '1100' y '1111' -> True
              '1100' y '1111' -> False
              '1XX1' y '10X1' -> False
