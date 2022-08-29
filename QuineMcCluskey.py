@@ -72,4 +72,26 @@ def difierenUnaCifra(numBits, minTer1, minTer2):
     else:
         return True
 
-#def combinarMinTerm:
+def combinarMinTerm(numBits, minTer1, minTer2):
+    """
+    Resumen: agrupa los minterminos que difieren en un bit.
+
+    Entradas
+    - numBits: numero de bits de la expresion booleana. Ejemplo: ABC || BC'D -> numBits es 4
+    - minTer1 y minTer2: las cadenas de minterminos a comparar. Ejemplo: minTer1-> '1100' & minTer2 -> '1111'
+
+    Salidas:
+    - lista con los minterminos que difieren en un bit
+    Ejemplo: 
+    """
+    bitDiferidos = 0
+
+    for i in range(0, numBits):
+        if minTer1[i] != minTer2[i]: # Compare si difieren en un bit
+            bitDiferidos += 1
+        else:
+            continue
+    if bitDiferidos > 1: #Si difieren en mas de un bit entonces no
+        return False
+    else:
+        return True
