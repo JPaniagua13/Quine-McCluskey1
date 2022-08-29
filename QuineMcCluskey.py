@@ -95,3 +95,11 @@ def combinarMinTerm(numBits, minTer1, minTer2):
         return False
     else:
         return True
+    
+    def partirListaEnDos(lista):
+        halfpoint = len(lista)/2
+        halfpoint = int(halfpoint)
+
+        primerMitad = lista[:halfpoint]
+        segundaMitad = lista[halfpoint:]
+        return primerMitad, segundaMitad
