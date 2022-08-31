@@ -1,3 +1,46 @@
+import argparse
+from distutils.log import info
+import os
+import sys
+
+
+def leer_minterminos(nombre_archivo):
+    # directorio del archivo
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    archivo_abierto = open(dir_path + "\\"+ nombre_archivo,"r")
+    linea = archivo_abierto.readline()
+    # los minterminos se leen como un string '1,2,4,5',
+    # Por lo que hay que convertirlos en una lista de numeros 
+    minterminos_strings = linea.split(',')
+    minterminos_numeros = list(map(int, minterminos_strings))
+    return minterminos_numeros
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-o", "--output", help="Nombre del archivo de salida")
+    parser.add_argument("-f", "--file", help="Nombre de archivo a procesar")
+    args = parser.parse_args()
+
+    if args.file is None:
+        print ("Debe de ingresar el nombre del archivo a procesar que tiene los terminos, -f FILE")
+        # termina el programa
+        sys.exit() 
+    if args.output is None:
+        print ("Debe de ingresa el nombre del archivo de salida, -o OUTPUT")
+        # termina el programa
+        sys.exit() 
+    
+    nombre_archivo_minterminos = args.file
+    nombre_archivo_salida = args.output 
+
+    minterminos = leer_minterminos(nombre_archivo_minterminos)
+    print(minterminos)
+
+
+
+
+
 def convertMinTermABinario(numBits, decMinTerm):
     """
     Resumen: convierte una lista de minterminos en decimal a un diccionario con representacion binaria
