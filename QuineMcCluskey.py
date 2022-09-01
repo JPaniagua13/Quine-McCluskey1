@@ -245,3 +245,99 @@ def petrick(Chart):
             break
     #final es el resultado de metodo Petrick
     return lista_final
+
+def mezclarMinTer(numBits, minTer1, minTer2):
+    '''
+    Resumen: 
+
+    Entradas:
+    -num bits: numero de bits de la expresion booleana. Ejemplo: ABC || BC'D -> numBits es 4
+
+    Salidas:
+    '''
+    resultado = str()
+
+    for i in range(0, numBits):
+        if minTer1[i] != minTer2[i]: # Compare si difieren en un bit
+            resultado += 'X'
+        else:
+            resultado += minTer1[i]
+    return resultado
+
+def convertirBinarioALiteral(numBits, minTerBinario):
+    '''
+    Resumen: 
+
+    Entradas:
+    -num bits: numero de bits de la expresion booleana. Ejemplo: ABC || BC'D -> numBits es 4
+
+    Salidas:
+    '''
+    cadena = 'ABCDEF'
+    resultado = str()
+
+    for i in range(0, numBits):
+
+        if minTerBinario[i] == '1':  
+            resultado += cadena[i]  
+        elif minTerBinario[i] == '0':
+            resultado += cadena[i] + '*'
+        else:
+            pass
+    return resultado
+
+def combinarMinTerDecBin(numBits, num):
+    cadena = str()
+    cadena = bin(num)  #Convierte de dec a bin: bin(11) -> '0b1011'
+    cadena = cadena[2:] #Trunca el '0b' para que quede solo '1011'
+
+    #Anade ceros segun el numero de bits. Por ejemplo 8 bits es '00001011'
+    return cadena.zfill(numBits) 
+
+def combinarMin(numBits, lista):
+    if len(lista) != 2:
+        a = combinarMin(numBits, partirListaEnDos(lista)[0])
+        b = combinarMin(numBits, partirListaEnDos(lista)[1])
+        return mezclarMinTer(numBits, a, b)
+    return mezclarMinTer(numBits, combinarMinTerDecBin(numBits, lista[0]), combinarMinTerDecBin(numBits, lista[1]))
+
+ef combinarMinter2(numBits, lista, implicantesPrimos, cont):
+    '''
+    Entrada:
+    [[1],[2],[3],[7],[8],[15]]
+
+    Salida:
+    [[1, 3], [2, 3], [3, 7], [7, 15]]
+    '''
+    paresAgrupados = list()
+    implicantesUtilizados = list()
+    huboCombinacion = False
+
+    for i in range(0, len(lista)):
+        if len(lista[i]) == 0:
+            pass
+        else:
+            for j in range(0, len(lista)):
+                if len(lista[j]) == 0:
+                    pass
+                else:
+                    if j > i and cont == 0:
+                        if difierenUnaCifra(numBits, combinarMinTerDecBin(numBits, lista[i][0]),
+                            combinarMinTerDecBin(numBits, lista[j][0])) == True:
+                            paresAgrupados.append([lista[i][0], lista[j][0]])
+                            huboCombinacion = True
+
+                    elif j > i:
+                        if difierenUnaCifra(numBits, combinarMin(numBits, lista[i]),
+                            combinarMin(numBits, lista[j])) == True:
+                            paresAgrupados.append(lista[i] + lista[j])
+                            huboCombinacion = True
+            if huboCombinacion == False:
+                implicantesPrimos.append(lista[i])
+
+    if huboCombinacion == False:
+        return implicantesPrimos
+    else:
+        cont += 1
+        combinarMinter2(numBits, paresAgrupados, implicantesPrimos, cont)
+
