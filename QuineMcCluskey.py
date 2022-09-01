@@ -16,16 +16,6 @@ def leer_minterminos(nombre_archivo):
     return minterminos_numeros
 
 
-
-
-
-
-
-
-
-
-
-
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-o", "--output", help="Nombre del archivo de salida")
@@ -178,3 +168,57 @@ def imprimirImpEsencialesLit(numBits, impEsenBin):
             impEsenLit += ' + '
     return impEsenLit
 
+#Funcion necesaria para utilizar metodo de Petrick
+#multplicacion logica de dos terminos 
+def multiplicacion(lista1, lista2):
+    lista_resultante = []
+    #Si ambas listas estan vacias
+    if (len(lista1) == 0 and len(lista2)== 0):
+        return lista_resultante
+    #if solo 1 lista esta vacia
+    elif len(lista1)==0:
+        return lista2
+    #if la otra lista esta vacia
+    elif len(lista2)==0:
+        return lista1
+
+    #Si ninguna de las 2 listas esta vacia
+    else:
+        for i in lista1:
+            for j in lista2:
+                #if hay 2 terminos iguales
+                if (i == j):
+                    lista_resultante.append(i)
+                else:
+                    lista_resultante.append(list(set(i+j)))
+
+        #ordenar y eliminar las listas redundantes y devolver esta lista
+        lista_resultante.sort()
+        return list(lista_resultante for lista_resultante,_ in itertools.groupby(lista_resultante))
+
+#Metodo petrick 
+def petrick(Chart):
+    #Lista P inicial
+    P = []
+    for columna in range(len(Chart[0])):
+        #lista p temporal util para lista P inicial
+        p =[]
+        for fila in range(len(Chart)):
+            if Chart[fila][columna] == 1:
+                p.append([fila])
+        P.append(p)
+    # multiplicacion logica
+    for l in range(len(P)-1):
+        P[l+1] = multiplicacion(P[l],P[l+1])
+
+    P = sorted(P[len(P)-1],key=len)
+    lista_final = []
+    #encontrar los términos con la longitud mínima = este es el de menor coste (resultado optimizado)
+    min=len(P[0])
+    for i in P:
+        if len(i) == min:
+            lista_final.append(i)
+        else:
+            break
+    #final es el resultado de metodo Petrick
+    return lista_final
