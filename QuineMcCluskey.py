@@ -4,6 +4,27 @@ import os
 import sys
 import itertools
 
+# Convertir cada mintérmino de la función booleana por su equivalente en representación binaria
+
+#Agrupar mintérminos por la cantidad de 1s en la representación binaria. Ej: 1010 tiene dos unos y se puede agrupar con 1100 y 0110. Si se está trabajando por con 4 literales, se van a encontrar
+#máximo 5 grupos: 0 unos, 1 uno, 2 unos, 3 unos y 4 unos. Los grupos encontrados se ordenan en una tabla.
+
+#Comparar cada número del mintérmino en el grupo superior con canda mintérmino del grupo inferior. Si entre dos números, cada posición es igual menos solo un dígito, se
+#anota un número nuevo en otra tabla con la misma representación binaria pero con una x en el dígito que difieren. Asimismo, se le coloca de categoría la composición 
+#de los mintérminos que crean el nuevo elemento. En caso que un mintérmino no se puede emparejar con ningún otro de la tabla, este se retira y se marca como implicante primo.
+
+#Con la nueva tabla elaborada por el emparejamiento de implicantes anterior, se agrupan cadaimplicante compuesto por la cantidad de 1s que lo comprenden y se vuelve a
+#emparejar elementos como en el paso 3. Considere las x como un dígito más. Si se repiten implicantes primos, preserve uno. Encaso de no poderse simplificar más elementos, se
+#seleccionan los implicantes primos encontrados.
+
+#Encontrar los implicantes primos esenciales. Para encontrarlo se elabora la tabla de implicantes primos donde cada implicante primo encontrado se coloca en una fila y los 
+#mintérminos que lo componen se marcan como columnas.
+
+#De acuerdo a la tabla, si un mintérmino solo es cubierto por un solo implicante primo, estees un implicante esencial. En caso contrario, si cada mintérmino de un implicante 
+#primo puede ser cubierto por los demás, este se retira de la tabla.
+
+#Los implicantes primos esenciales corresponden a la ecuación booleana reducida
+
 def leer_minterminos(nombre_archivo):
     # directorio del archivo
     dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -196,6 +217,8 @@ def multiplicacion(lista1, lista2):
         lista_resultante.sort()
         return list(lista_resultante for lista_resultante,_ in itertools.groupby(lista_resultante))
 
+    
+    
 #Metodo petrick 
 def petrick(Chart):
     #Lista P inicial
