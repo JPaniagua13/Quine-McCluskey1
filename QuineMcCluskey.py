@@ -274,10 +274,10 @@ def combinarMin(numBits, lista):
 def combinarMinter2(numBits, lista, implicantesPrimos, cont):
     '''
     Entrada:
-    [[1],[2],[3],[7],[8],[15]]
+    [[1],[3],[5],[7]]
 
     Salida:
-    [[1, 3], [2, 3], [3, 7], [7, 15]]
+    
     '''
     paresAgrupados = list()
     implicantesUtilizados = list()
@@ -297,13 +297,28 @@ def combinarMinter2(numBits, lista, implicantesPrimos, cont):
                             paresAgrupados.append([lista[i][0], lista[j][0]])
                             huboCombinacion = True
 
+                            ########################################################################
+                            if implicantesUtilizados.count(lista[i]) < 0:
+                                implicantesUtilizados.append(lista[i])
+                            if implicantesUtilizados.count(lista[j]) < 0:
+                                implicantesUtilizados.append(lista[j])                                
+                            ###########################################################################
+
                     elif j > i:
                         if difierenUnaCifra(numBits, combinarMin(numBits, lista[i]),
                             combinarMin(numBits, lista[j])) == True:
                             paresAgrupados.append(lista[i] + lista[j])
                             huboCombinacion = True
-            if huboCombinacion == False:
-                implicantesPrimos.append(lista[i])
+
+                            #########################################################
+                            if implicantesUtilizados.count(lista[i]) < 0:
+                                implicantesUtilizados.append(lista[i])
+                            if implicantesUtilizados.count(lista[j]) < 0:
+                                implicantesUtilizados.append(lista[j])   
+                            #########################################################
+    for k in lista:
+        if implicantesUtilizados.count(k) < 0:
+            implicantesPrimos.append(k)
 
     if huboCombinacion == False:
         return implicantesPrimos
