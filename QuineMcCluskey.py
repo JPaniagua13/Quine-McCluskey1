@@ -147,18 +147,18 @@ def combinarMinTerm(numBits, minTer1, minTer2):
 
 def imprimirImpEsencialesLit(numBits, impEsenBin):
     '''
-    Resumen: imprime los mintérminos esenciales
+    Resumen: imprime los minterminos esenciales en su forma literal
 
-    Entrada: lista de mintérminos mezclados. Ejemplo: ['1XX1','0X1X','111X']
+    Entrada: lista de minterminos mezclados en su forma binaria. Ejemplo: ['1XX1','0X1X','111X']
 
-    Salida: la cadena con los mintérminos en su forma literal. Ejemplo: ' AD + A*C + ABC '
+    Salida: la cadena con los minterminos en su forma literal. Ejemplo: ' AD + A*C + ABC '
     '''
     cadena = 'ABCDEF'
     impEsenLit = str()
 
     for i in range(0, len(impEsenBin)): #i representa los indices de la lista
         for j in range(0, numBits): #j representa los indices de las cadenas
-            if impEsenBin[i][j] == '1':
+            if impEsenBin[i][j] == '1': 
                 impEsenLit += cadena[j]
             elif impEsenBin[i][j] == '0':
                 impEsenLit += cadena[j] + '*'
