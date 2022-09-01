@@ -301,7 +301,7 @@ def combinarMin(numBits, lista):
         return mezclarMinTer(numBits, a, b)
     return mezclarMinTer(numBits, combinarMinTerDecBin(numBits, lista[0]), combinarMinTerDecBin(numBits, lista[1]))
 
-ef combinarMinter2(numBits, lista, implicantesPrimos, cont):
+def combinarMinter2(numBits, lista, implicantesPrimos, cont):
     '''
     Entrada:
     [[1],[2],[3],[7],[8],[15]]
