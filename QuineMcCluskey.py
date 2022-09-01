@@ -116,7 +116,7 @@ def difierenUnaCifra(numBits, minTer1, minTer2):
 
     Salidas:
     - si difieren en una cifra retorna true. De lo contrario false. (Si difieren en X's retorna false)
-    Ejemplo: '1100' y '1111' -> True
+    Ejemplo: '1101' y '1111' -> True
              '1100' y '1111' -> False
              '1XX1' y '10X1' -> False
     """
