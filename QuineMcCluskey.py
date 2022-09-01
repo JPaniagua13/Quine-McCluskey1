@@ -2,7 +2,7 @@ import argparse
 from distutils.log import info
 import os
 import sys
-
+import itertools
 
 def leer_minterminos(nombre_archivo):
     # directorio del archivo
@@ -14,6 +14,16 @@ def leer_minterminos(nombre_archivo):
     minterminos_strings = linea.split(',')
     minterminos_numeros = list(map(int, minterminos_strings))
     return minterminos_numeros
+
+
+
+
+
+
+
+
+
+
 
 
 def main():
