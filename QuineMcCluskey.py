@@ -192,7 +192,7 @@ def multiplicacion(lista1, lista2):
                 else:
                     lista_resultante.append(list(set(i+j)))
 
-        #ordenar y eliminar las listas redundantes y devolver esta lista
+        #ordenar(sort) y eliminar las listas redundantes y devolver esta lista
         lista_resultante.sort()
         return list(lista_resultante for lista_resultante,_ in itertools.groupby(lista_resultante))
 
@@ -210,7 +210,7 @@ def petrick(Chart):
     # multiplicacion logica
     for l in range(len(P)-1):
         P[l+1] = multiplicacion(P[l],P[l+1])
-
+    #El sorted crea una nueva lista ordenada a partir de un iterable
     P = sorted(P[len(P)-1],key=len)
     lista_final = []
     #encontrar los términos con la longitud mínima = este es el de menor coste (resultado optimizado)
