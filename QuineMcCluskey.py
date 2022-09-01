@@ -134,38 +134,6 @@ def difierenUnaCifra(numBits, minTer1, minTer2):
     else:
         return True
 
-def combinarMinTerm(numBits, minTer1, minTer2):
-    """
-    Resumen: agrupa los minterminos que difieren en un bit.
-
-    Entradas
-    - numBits: numero de bits de la expresion booleana. Ejemplo: ABC || BC'D -> numBits es 4
-    - minTer1 y minTer2: las cadenas de minterminos a comparar. Ejemplo: minTer1-> '1100' & minTer2 -> '1111'
-
-    Salidas:
-    - lista con los minterminos que difieren en un bit
-    Ejemplo: 
-    """
-    bitDiferidos = 0
-
-    for i in range(0, numBits):
-        if minTer1[i] != minTer2[i]: # Compare si difieren en un bit
-            bitDiferidos += 1
-        else:
-            continue
-    if bitDiferidos > 1: #Si difieren en mas de un bit entonces no
-        return False
-    else:
-        return True
-    
-    def partirListaEnDos(lista):
-        halfpoint = len(lista)/2
-        halfpoint = int(halfpoint)
-
-        primerMitad = lista[:halfpoint]
-        segundaMitad = lista[halfpoint:]
-        return primerMitad, segundaMitad
-
 def imprimirImpEsencialesLit(numBits, impEsenBin):
     '''
     Resumen: imprime los minterminos esenciales en su forma literal
@@ -248,12 +216,14 @@ def petrick(Chart):
 
 def mezclarMinTer(numBits, minTer1, minTer2):
     '''
-    Resumen: 
+    Resumen: sustituye con una X el valor de los mintérminos en que difieren
 
     Entradas:
     -num bits: numero de bits de la expresion booleana. Ejemplo: ABC || BC'D -> numBits es 4
+    -minTer1 y minTer2: las cadenas de los mintérminos a mezclar. Ejemplo: '1011' y '1111'
 
     Salidas:
+    - una cadena con el correspondiente resultado. Ejemplo: '1X11'
     '''
     resultado = str()
 
