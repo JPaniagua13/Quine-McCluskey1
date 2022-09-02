@@ -37,27 +37,6 @@ def leer_minterminos(nombre_archivo):
     return minterminos_numeros
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-o", "--output", help="Nombre del archivo de salida")
-    parser.add_argument("-f", "--file", help="Nombre de archivo a procesar")
-    args = parser.parse_args()
-
-    if args.file is None:
-        print ("Debe de ingresar el nombre del archivo a procesar que tiene los terminos, -f FILE")
-        # termina el programa
-        sys.exit() 
-    if args.output is None:
-        print ("Debe de ingresa el nombre del archivo de salida, -o OUTPUT")
-        # termina el programa
-        sys.exit() 
-    
-    nombre_archivo_minterminos = args.file
-    nombre_archivo_salida = args.output 
-
-    minterminos = leer_minterminos(nombre_archivo_minterminos)
-    print(minterminos)
-
 
 
 def convertMinTermABinario(numBits, decMinTerm):
@@ -269,4 +248,30 @@ def combinarMinter2(numBits, lista, implicantesPrimos, cont):
     else:
         cont += 1
         combinarMinter2(numBits, paresAgrupados, implicantesPrimos, cont)
+        
+        
+        
+        
+   def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-o", "--output", help="Nombre del archivo de salida")
+    parser.add_argument("-f", "--file", help="Nombre de archivo a procesar")
+    args = parser.parse_args()
+
+    if args.file is None:
+        print ("Debe de ingresar el nombre del archivo a procesar que tiene los terminos, -f FILE")
+        # termina el programa
+        sys.exit() 
+    if args.output is None:
+        print ("Debe de ingresa el nombre del archivo de salida, -o OUTPUT")
+        # termina el programa
+        sys.exit() 
+    
+    nombre_archivo_minterminos = args.file
+    nombre_archivo_salida = args.output 
+
+    minterminos = leer_minterminos(nombre_archivo_minterminos)
+    print(minterminos)
+
+
 
