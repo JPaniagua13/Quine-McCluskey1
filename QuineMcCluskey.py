@@ -36,9 +36,6 @@ def leer_minterminos(nombre_archivo):
     minterminos_numeros = list(map(int, minterminos_strings))
     return minterminos_numeros
 
-
-
-
 def convertMinTermABinario(numBits, decMinTerm):
     """
     Resumen: convierte una lista de minterminos en decimal a un diccionario con representacion binaria
@@ -139,14 +136,15 @@ def imprimirImpEsencialesLit(numBits, impEsenBin):
 
 def mezclarMinTer(numBits, minTer1, minTer2):
     '''
-    Resumen: sustituye con una X el valor de los mintérminos en que difieren
+    Resumen: toma dos mintérminos que difieren en una cifra y los mezcla. Esto es, coloca una 'X' en la cifra que difieren
 
     Entradas:
-    -num bits: numero de bits de la expresion booleana. Ejemplo: ABC || BC'D -> numBits es 4
-    -minTer1 y minTer2: las cadenas de los mintérminos a mezclar. Ejemplo: '1011' y '1111'
+    - numBits(int): numero de bits de la expresion booleana. Ejemplo: ABC || BC'D -> numBits es 4
+    - minTer1(str): cadena de un mintérmino. Ejemplo: '01X1'
+    - minTer2(str): cadena de un mintérmino. Ejemplo: '00X1'
 
-    Salidas:
-    - una cadena con el correspondiente resultado. Ejemplo: '1X11'
+    Salida:
+    - resultado(str): su respectiva combinación. Ejemplo: '0XX1'
     '''
     resultado = str()
 
@@ -187,70 +185,87 @@ def combinarMinTerDecBin(numBits, num):
     #Anade ceros segun el numero de bits. Por ejemplo 8 bits es '00001011'
     return cadena.zfill(numBits) 
 
-def combinarMin(numBits, lista):
-    if len(lista) != 2:
-        a = combinarMin(numBits, partirListaEnDos(lista)[0])
-        b = combinarMin(numBits, partirListaEnDos(lista)[1])
-        return mezclarMinTer(numBits, a, b)
-    return mezclarMinTer(numBits, combinarMinTerDecBin(numBits, lista[0]), combinarMinTerDecBin(numBits, lista[1]))
-
-def combinarMinter2(numBits, lista, implicantesPrimos, cont):
+def combinarMin(numBits, secuencia):
     '''
-    Entrada:
-    [[1],[3],[5],[7]]
+    Resumen: dada una secuencia de combinaciones halla su representación.
+
+    Entradas: 
+    - secuencia (list):la secuencia de una combinación. Ejemplo: [1,3,5,7]
 
     Salida:
+    - (str) la representación que se consigue dada dicha combinación. Ejemplo: [1,3,5,7] -> [1,3] y [5,7]. 
+                                                                                Entonces '00X1' y '01X1'
+                                                                                Finalmente -> '0XX1'
+    '''                                                                                                  
+    if len(secuencia) != 2:
+        a = combinarMin(numBits, partirListaEnDos(secuencia)[0])
+        b = combinarMin(numBits, partirListaEnDos(secuencia)[1])
+        return mezclarMinTer(numBits, a, b)
+
+    return mezclarMinTer(numBits, combinarMinTerDecBin(numBits, secuencia[0]), combinarMinTerDecBin(numBits, secuencia[1]))
+
+def hallarPrimos(numBits, listaInicial, listaPrimos, primerCorrida):
+    '''
+    Resumen: la función recursiva combina los mintérminos y finalmente halla los primos.
+
+    Entrada:
+    - numBits(int): numero de bits de la expresion booleana. Ejemplo: ABC || BC'D -> numBits es 4
+    - listaInicial(list): una lista de listas de mintérminos. Ejemplo:[[1],[3],[5],[7]]
+    - listaPrimos(list): aquí almacena los implicantes primos que encuentra.
+
+    Salida:
+    - (list) la lista de implicantes primos. Ejemplo: [1,3,5,7]
     
     '''
     paresAgrupados = list()
     implicantesUtilizados = list()
     huboCombinacion = False
 
-    for i in range(0, len(lista)):
-        if len(lista[i]) == 0:
+    for i in range(0, len(listaInicial)):
+        if len(listaInicial[i]) == 0: # si la lista esta vacía no tiene que comparar
             pass
         else:
-            for j in range(0, len(lista)):
-                if len(lista[j]) == 0:
+            for j in range(0, len(listaInicial)):
+                if len(listaInicial[j]) == 0: # si la lista esta vacía no tiene que comparar
                     pass
                 else:
-                    if j > i and cont == 0:
-                        if difierenUnaCifra(numBits, combinarMinTerDecBin(numBits, lista[i][0]),
-                            combinarMinTerDecBin(numBits, lista[j][0])) == True:
-                            paresAgrupados.append([lista[i][0], lista[j][0]])
+                    # la comparación 'j > i' compara dos elementos una sola vez. 
+                    # 'primerCorrida = True' porque la primera combinacion es diferente del resto
+                    if j > i and primerCorrida == True:
+                        if difierenUnaCifra(numBits, combinarMinTerDecBin(numBits, listaInicial[i][0]),
+                            combinarMinTerDecBin(numBits, listaInicial[j][0])) == True:
+                            paresAgrupados.append([listaInicial[i][0], listaInicial[j][0]])
                             huboCombinacion = True
 
-                            ########################################################################
-                            if implicantesUtilizados.count(lista[i]) < 0:
-                                implicantesUtilizados.append(lista[i])
-                            if implicantesUtilizados.count(lista[j]) < 0:
-                                implicantesUtilizados.append(lista[j])                                
-                            ###########################################################################
+                            if implicantesUtilizados.count(listaInicial[i]) < 0:
+                                implicantesUtilizados.append(listaInicial[i])
+                            if implicantesUtilizados.count(listaInicial[j]) < 0:
+                                implicantesUtilizados.append(listaInicial[j])                                
 
                     elif j > i:
-                        if difierenUnaCifra(numBits, combinarMin(numBits, lista[i]),
-                            combinarMin(numBits, lista[j])) == True:
-                            paresAgrupados.append(lista[i] + lista[j])
+                        if difierenUnaCifra(numBits, combinarMin(numBits, listaInicial[i]),
+                            combinarMin(numBits, listaInicial[j])) == True:
+                            paresAgrupados.append(listaInicial[i] + listaInicial[j])
                             huboCombinacion = True
 
-                            #########################################################
-                            if implicantesUtilizados.count(lista[i]) < 0:
-                                implicantesUtilizados.append(lista[i])
-                            if implicantesUtilizados.count(lista[j]) < 0:
-                                implicantesUtilizados.append(lista[j])   
-                            #########################################################
-    for k in lista:
-        if implicantesUtilizados.count(k) < 0:
-            implicantesPrimos.append(k)
+                            if implicantesUtilizados.count(listaInicial[i]) < 0:
+                                implicantesUtilizados.append(listaInicial[i])
+                            if implicantesUtilizados.count(listaInicial[j]) < 0:
+                                implicantesUtilizados.append(listaInicial[j])   
 
-    if huboCombinacion == False:
-        return implicantesPrimos
+    for k in listaInicial:
+        if implicantesUtilizados.count(k) < 0:
+            listaPrimos.append(k)
+
+    if huboCombinacion == False: #No hubo combinaciones, no repita más
+        return listaPrimos
+    
     else:
-        cont += 1
-        combinarMinter2(numBits, paresAgrupados, implicantesPrimos, cont)
-        
-        
-        
+        primerCorrida = False
+
+        #Con los elementos que mezclo vuelva a hacer el mismo procedimiento hasta que no se puedan mezclar más
+        hallarPrimos(numBits, paresAgrupados, listaPrimos, primerCorrida)
+      
         
    def main():
     parser = argparse.ArgumentParser()
