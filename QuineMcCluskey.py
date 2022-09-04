@@ -361,9 +361,8 @@ def representarBinario(impPrimo, listaInicialMin):
                 listaEsenciales.append(listaPrimos[j])
 
     return listaEsenciales
-      
-        
-   def main():
+    
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-o", "--output", help="Nombre del archivo de salida")
     parser.add_argument("-f", "--file", help="Nombre de archivo a procesar")
