@@ -265,6 +265,18 @@ def hallarPrimos(numBits, listaInicial, listaPrimos, primerCorrida):
 
         #Con los elementos que mezclo vuelva a hacer el mismo procedimiento hasta que no se puedan mezclar más
         hallarPrimos(numBits, paresAgrupados, listaPrimos, primerCorrida)
+        
+   def representarBinario(impPrimo, listaInicialMin):
+    '''
+    Resumen: los números que la lista no contiene son 0's, aquellos que sí tiene son 1's
+
+    Entradas:
+    - impPrimo(list): lista de numeros enteros. Ejemplo: [3,7,11,15]
+    - listaInicialMin(list): lista incial de minterminos. Ejemplo: [1,3,4,5,7,9,10,11,15]
+
+    Salida:
+    - respuesta(str): Ejemplo: '010010011'
+    '''
       
         
    def main():
