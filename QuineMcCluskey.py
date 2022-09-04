@@ -326,6 +326,41 @@ def representarBinario(impPrimo, listaInicialMin):
     Salida:
     - respuesta(str): Ejemplo: '010010011'
     '''
+    
+ def Petricks(listaInicialMin, listaPrimos):
+    '''
+    Resumen: encuentra los implicantes esenciales
+
+    Entradas:
+    - listaPrimos(list): lista de los implicantes primos.
+    Ejemplo: [[4, 5], [10, 11], [1, 3, 5, 7], [1, 3, 9, 11], [3, 7, 11, 15]]
+    - listaInicialMin(list): lista incial de minterminos.
+    Ejemplo: [1,3,4,5,7,9,10,11,15]
+    
+
+    Salidas:
+    - listaEsenciales(list): lista de los implicantes esenciales. 
+    Ejemplo: [[4, 5], [10, 11], [1, 3, 9, 11], [3, 7, 11, 15]]              
+    '''
+    listaPrimoBits = list()
+    listaEsenciales = list()
+
+    #Añade los implicantes primos a una lista en una representación en Bits.
+    for i in range(0, len(listaPrimos)):
+        listaPrimoBits.append(representarBits(listaPrimos[i],listaInicialMin))
+
+    for j in range(0, len(listaPrimos)):
+        for k in range(0, len(listaInicialMin)): #Itera cifra por cifra
+            unico = True
+            #Si dos cifras coinciden entonces el implicante no es esencial
+            for z in range(0, len(listaPrimos)):
+                if j != z and listaPrimoBits[j][k] == listaPrimoBits[z][k]:
+                    unico = False
+            #Si en ninguna cifra coincida anadala a la lista de esenciales
+            if unico == True:
+                listaEsenciales.append(listaPrimos[j])
+
+    return listaEsenciales
       
         
    def main():
