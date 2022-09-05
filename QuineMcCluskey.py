@@ -301,20 +301,6 @@ def hallarPrimos(numBits, listaInicial, listaPrimos, primerCorrida):
         #Con los elementos que mezclo vuelva a hacer el mismo procedimiento hasta que no se puedan mezclar más
         return hallarPrimos(numBits, paresAgrupados, listaPrimos, primerCorrida)
 
-
-def Petricks():
-    '''
-    Resumen:
-
-    Entradas:
-    - listaPrimos(list): lista implicantes primos. Ejemplo: [[3,7,11,15], [1,3,9,11], [1,3,5,7], [10,11], [4,5]]
-
-    Salidas:
-    - listaEsenciales(list): lista de los implicantes esenciales. Ejemplo: [[3,7,11,15], [1,3,9,11], [10,11], [4,5]]
-
-    Todos los mintermnos : 1,3,4,5,7,9,10,11,15                      
-    '''
-
 def representarBinario(impPrimo, listaInicialMin):
     '''
     Resumen: los números que la lista no contiene son 0's, aquellos que sí tiene son 1's
