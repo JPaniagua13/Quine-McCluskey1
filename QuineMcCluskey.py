@@ -1,8 +1,6 @@
 import argparse
 from distutils.log import info
-import os
 import sys
-import itertools
 
 # Convertir cada mintérmino de la función booleana por su equivalente en representación binaria
 
@@ -24,10 +22,6 @@ import itertools
 #primo puede ser cubierto por los demás, este se retira de la tabla.
 
 #Los implicantes primos esenciales corresponden a la ecuación booleana reducida
-
-import argparse
-from distutils.log import info
-import sys
 
 def representarBinario(impPrimo, listaInicialMin):
     '''
@@ -67,7 +61,7 @@ def Petricks(listaInicialMin, listaPrimos):
 
     #Añade los implicantes primos a una lista en una representación en Bits.
     for i in range(0, len(listaPrimos)):
-        listaPrimoBits.append(representarBits(listaPrimos[i],listaInicialMin))
+        listaPrimoBits.append(representarBinario(listaPrimos[i],listaInicialMin))
 
     for j in range(0, len(listaPrimos)):
         for k in range(0, len(listaInicialMin)): #Itera cifra por cifra
@@ -77,7 +71,7 @@ def Petricks(listaInicialMin, listaPrimos):
                 if j != z and listaPrimoBits[j][k] == listaPrimoBits[z][k]:
                     unico = False
             #Si en ninguna cifra coincida anadala a la lista de esenciales
-            if unico == True:
+            if unico == True and listaEsenciales.count(listaPrimos[j]) == 0:
                 listaEsenciales.append(listaPrimos[j])
 
     return listaEsenciales
@@ -304,19 +298,22 @@ def main():
         sys.exit() 
     
     nombre_archivo_minterminos = args.file
-    nombre_archivo_salida = args.output 
+    nombre_archivo_salida = args.output
 
     minterminos = leer_minterminos(nombre_archivo_minterminos)
+    
 
     numeroBits = (max(minterminos)).bit_length() # Según el mintérmino más grande, coloca el mínimo num de bits necesarios
 
+    listaX = list()
     for i in range(0, len(minterminos)): #Convierte [1,4,6,15] a -> [[1], [4], [6], [15]].                       
-        resultado = list()               #Esto porque la funcion hallarPrimos los acepta así
+        listaX.append(minterminos[i])             #Esto porque la funcion hallarPrimos los acepta así
+        resultado = list()  
         resultado.append(minterminos[i])
         minterminos[i] = resultado
 
-    return numeroBits, minterminos
+    return numeroBits, minterminos, listaX
 
 a = main()
 implicantesPrimos = hallarPrimos(a[0], a[1], [], True)
-print( Petricks(listaInicialMin, implicantesPrimos) )
+print( Petricks(a[2], implicantesPrimos) )
