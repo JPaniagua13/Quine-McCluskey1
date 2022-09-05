@@ -312,6 +312,19 @@ def representarBinario(impPrimo, listaInicialMin):
     Salida:
     - respuesta(str): Ejemplo: '010010011'
     '''
+    #repreBits me dira si un elemento es repetido o no, sera util en petrick para identificar implicantes primos esenciales
+    repreBits= str()
+    for i in range(0,len(listaInicialMin)):     
+        if impPrimo.count(listaInicialMin[i])!=0:
+            repreBits+= '1' #si el elemento se repite, se identifica con 1
+        else:
+            repreBits+= '0'#si el elemento no se repite, se identifica con 0
+            
+                
+    return repreBits
+    
+    
+    
     
  def Petricks(listaInicialMin, listaPrimos):
     '''
