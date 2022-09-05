@@ -28,7 +28,7 @@ import itertools
 def leer_minterminos(nombre_archivo):
     # directorio del archivo
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    archivo_abierto = open(dir_path + "\\"+ nombre_archivo,"r")
+    archivo_abierto = open(nombre_archivo,"r")
     linea = archivo_abierto.readline()
     # los minterminos se leen como un string '1,2,4,5',
     # Por lo que hay que convertirlos en una lista de numeros 
