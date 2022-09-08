@@ -1,7 +1,14 @@
 import argparse
 from distutils.log import info
 import sys
+from xml.dom import minicompat
+from pylatex import Document, Section, Subsection, Command, Math, TikZ, Axis, Plot, Figure,VectorName, Matrix, Alignat,  PageStyle, Head, Foot, MiniPage, \
+    StandAloneGraphic, MultiColumn, Tabu, LongTabu, LargeText, MediumText, \
+    LineBreak, NewPage, Tabularx, TextColor, simple_page_number, Itemize, Hyperref, Package, Table, Tabular, MultiColumn, MultiRow, Label, Ref, NoEscape
 
+from pylatex.utils import italic, bold, NoEscape, escape_latex
+import pandas as pd
+import numpy as np
 # Convertir cada mintérmino de la función booleana por su equivalente en representación binaria
 
 #Agrupar mintérminos por la cantidad de 1s en la representación binaria. Ej: 1010 tiene dos unos y se puede agrupar con 1100 y 0110. Si se está trabajando por con 4 literales, se van a encontrar
@@ -204,14 +211,14 @@ def difierenUnaCifra(numBits, minTer1, minTer2):
     else:
         return True
 
-def hallarPrimos( numBits, listaInicial, listaPrimos, primerCorrida):
+def hallarPrimos( numBits, listaInicial, listaPrimos, primerCorrida, documentoPylatex):
     '''
     Resumen: la función recursiva combina los mintérminos y finalmente halla los primos.
 
     Entrada:
     - numBits(int): numero de bits de la expresion booleana. Ejemplo: ABC || BC'D -> numBits es 4
     - listaInicial(list): una lista de listas de mintérminos. 
-    Ejemplo: [[1],[3],[4],[5],[7],[9],[10],[11],[15]]
+    Ejemplo: [1,3,4],[5],[7],[9],[10],[11],[15]]
     - listaPrimos(list): aquí almacena los implicantes primos que encuentra. Comienza vacía
     Ejemplo: []
 
@@ -220,6 +227,10 @@ def hallarPrimos( numBits, listaInicial, listaPrimos, primerCorrida):
     Ejemplo: [[4, 5], [10, 11], [1, 3, 5, 7], [1, 3, 9, 11], [3, 7, 11, 15]]
     
     '''
+    imprimir_terminos_primos_latex(documentoPylatex, listaInicial,listaPrimos)
+
+
+
     paresAgrupados = list()
     implicantesUtilizados = list()
     huboCombinacion = False
@@ -234,6 +245,7 @@ def hallarPrimos( numBits, listaInicial, listaPrimos, primerCorrida):
                 else:
                     # la comparación 'j > i' compara dos elementos una sola vez. 
                     # 'primerCorrida = True' porque la primera combinacion es diferente del resto
+                    
                     if j > i and primerCorrida == True:
                         if difierenUnaCifra(numBits, combinarMinTerDecBin(numBits, listaInicial[i][0]),
                             combinarMinTerDecBin(numBits, listaInicial[j][0])) == True:
@@ -270,7 +282,7 @@ def hallarPrimos( numBits, listaInicial, listaPrimos, primerCorrida):
         primerCorrida = False
 
         #Con los elementos que mezclo vuelva a hacer el mismo procedimiento hasta que no se puedan mezclar más
-        return hallarPrimos(numBits, paresAgrupados, listaPrimos, primerCorrida)
+        return hallarPrimos(numBits, paresAgrupados, listaPrimos, primerCorrida, documentoPylatex)
 
 def leer_minterminos(nombre_archivo):
     # directorio del archivo
@@ -281,6 +293,34 @@ def leer_minterminos(nombre_archivo):
     minterminos_strings = linea.split(',')
     minterminos_numeros = list(map(int, minterminos_strings))
     return minterminos_numeros
+
+
+def crear_documento_latex():
+    geometry_options = {"tmargin": "1cm", "lmargin": "1cm"}
+    doc = Document(documentclass='beamer')
+    
+    with doc.create(Section('titlepage')):
+        doc.preamble.append(Command('title', 'Quine McCluskey'))
+        doc.preamble.append(Command('institute', 'Tecnologico de Costa Rica'))
+        doc.preamble.append(Command('subtitle', 'Diseño Logico'))
+        doc.preamble.append(Command('author', 'Fiorela Chavarria, Samuel Montenegro, Jeaustin Paniagua, David Vargas' ))
+        doc.preamble.append(Command('date', NoEscape(r'\today')))
+        doc.append(NoEscape(r'\maketitle'))   
+    doc.append(NewPage())
+    return doc
+
+def imprimir_terminos_primos_latex(doc, lista_pares_agrupados,lista_primos ):
+    df = pd.DataFrame(np.array(lista_pares_agrupados))
+
+    subsection = Section('Lista de pares agrupados')
+    vec = Matrix(np.array(lista_pares_agrupados))
+    vec_name = VectorName('a')
+    math = Math(data=[vec_name, '=', vec])
+    subsection.append(math)
+    doc.append(subsection)
+        
+def guardar_pdf(documento_pylatex, nombre_archivo):
+    documento_pylatex.generate_pdf(nombre_archivo, clean_tex=False, compiler='pdflatex')
 
 def main():
     parser = argparse.ArgumentParser()
@@ -312,8 +352,16 @@ def main():
         resultado.append(minterminos[i])
         minterminos[i] = resultado
 
-    return numeroBits, minterminos, listaX
 
-a = main()
-implicantesPrimos = hallarPrimos(a[0], a[1], [], True)
-print( Petricks(a[2], implicantesPrimos) )
+    documento_pylatex = crear_documento_latex()    
+
+    implicantesPrimos = hallarPrimos(numeroBits,minterminos, [], True, documento_pylatex)
+
+    print( Petricks(listaX, implicantesPrimos) )
+
+    guardar_pdf(documento_pylatex, nombre_archivo_salida)
+
+
+
+# Ejecuta el programa 
+main()
